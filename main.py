@@ -24,7 +24,16 @@ def spare_matrix_Abt(m: int, n: int) -> tuple[np.ndarray, np.ndarray] | None:
             - Wektor b (m,).
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    if not isinstance(m, int) or not isinstance(n, int):
+        return None
+    if m <= 0 or n <= 0: 
+        return None
+    
+
+    t = np.linspace(0, 1, m)
+    b = np.cos(4*t)
+    A = np.vander(t, n, increasing=True)
+    return (A, b)
 
 
 def square_from_rectan(
@@ -44,7 +53,17 @@ def square_from_rectan(
             - Wektor b_new (n,).
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+
+    if not isinstance(A, np.ndarray) or not isinstance(b, np.ndarray):
+        return None
+    
+    if A.ndim != 2 or b.ndim != 1 or A.shape[0] != len(b):
+        return None
+    
+    A_new = (A.T) @ A
+    b_new = (A.T) @ b
+
+    return (A_new,b_new)
 
 
 def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
@@ -60,4 +79,9 @@ def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
         (float): Wartość normy residuum dla podanych parametrów.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    if not isinstance(A,np.ndarray) or not isinstance(x, np.ndarray) or not isinstance(b,np.ndarray):
+        return None
+    if A.ndim != 2 or b.ndim != 1 or A.shape[0] != len(b):
+        return None
+    r = A @ x - b
+    return np.linalg.norm(r)
